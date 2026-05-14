@@ -1,0 +1,34 @@
+public class StudController {
+
+    public Stud__c stud {get; set;}
+    public List<Stud__c> studList {get; set;}
+
+    // Constructor
+    public StudController() {
+        stud = new Stud__c();
+        fetchStudents();
+    }
+
+    // Save student record
+    public void saveStudent() {
+        insert stud;
+        stud = new Stud__c();
+        fetchStudents();
+    }
+
+    // Fetch all records
+    public void fetchStudents() {
+        studList = [SELECT Id, Name, Roll_No__c, Class__c, Mobile_No__c
+                    FROM Stud__c];
+    }
+
+    // Delete record
+    public void deleteStudent() {
+        String studId = ApexPages.currentPage().getParameters().get('id');
+
+        if(studId != null) {
+            delete [SELECT Id FROM Stud__c WHERE Id = :studId];
+            fetchStudents();
+        }
+    }
+}

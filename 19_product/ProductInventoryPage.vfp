@@ -1,0 +1,54 @@
+<apex:page controller="ProductController">
+
+    <apex:form >
+
+        <h2>Product Inventory</h2>
+
+        <!-- FORM -->
+        <apex:pageBlock title="Add / Edit Product">
+
+            <apex:pageBlockSection columns="1">
+                <apex:inputField value="{!prod.Name}"/>
+                <apex:inputField value="{!prod.Serial_No__c}"/>
+                <apex:inputField value="{!prod.Manufacture_Date__c}"/>
+                <apex:inputField value="{!prod.Expiry_Date__c}"/>
+            </apex:pageBlockSection>
+
+            <apex:pageBlockButtons >
+                <apex:commandButton value="Save" action="{!save}" rerender="table,form"/>
+                <apex:commandButton value="Reset" action="{!reset}" rerender="form"/>
+            </apex:pageBlockButtons>
+
+        </apex:pageBlock>
+
+        <!-- TABLE -->
+        <apex:pageBlock title="Products" id="table">
+
+            <apex:pageBlockTable value="{!prodList}" var="p">
+
+                <apex:column value="{!p.Name}"/>
+                <apex:column value="{!p.Serial_No__c}"/>
+                <apex:column value="{!p.Manufacture_Date__c}"/>
+                <apex:column value="{!p.Expiry_Date__c}"/>
+
+                <apex:column headerValue="Action">
+
+                    <apex:commandLink value="Edit" action="{!edit}" rerender="form">
+                        <apex:param name="id" value="{!p.Id}" assignTo="{!selectedId}"/>
+                    </apex:commandLink>
+
+                    &nbsp;|&nbsp;
+
+                    <apex:commandLink value="Delete" action="{!deleteRec}" rerender="table">
+                        <apex:param name="id" value="{!p.Id}" assignTo="{!selectedId}"/>
+                    </apex:commandLink>
+
+                </apex:column>
+
+            </apex:pageBlockTable>
+
+        </apex:pageBlock>
+
+    </apex:form>
+
+</apex:page>

@@ -1,0 +1,39 @@
+<apex:page controller="SendEmailExample">
+    <apex:form >
+        
+        <apex:pageBlock title="Send Email">
+            
+            <!-- Button -->
+            <apex:commandButton value="Send Email" action="{!sendEmail}" rerender="msg"/>
+            
+            <!-- Message -->
+            <apex:outputPanel id="msg">
+                <apex:outputText value="{!message}" 
+                                 style="color:green; font-weight:bold;"/>
+            </apex:outputPanel>
+            
+        </apex:pageBlock>
+        
+    </apex:form>
+</apex:page>
+
+
+<!--
+// Create email message object
+Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
+
+// Recipient email
+mail.setToAddresses(new String[] {'c2k231107@ms.pict.edu'});
+
+// Email subject
+mail.setSubject('Salesforce Email Notification');
+
+// Email body
+mail.setPlainTextBody('Hello,\nThis is a test email sent using Apex in Salesforce.');
+
+// Send email
+Messaging.sendEmail(new Messaging.SingleEmailMessage[] { mail });
+
+// Success message
+System.debug('Email sent successfully!');
+-->

@@ -1,0 +1,17 @@
+Rule 1: Name ≥ 3 characters
+LEN(Name) < 3
+
+Rule 2: Employee ID > 0
+Employee_ID__c <= 0
+
+Rule 3: Salary range
+OR(
+ Salary__c < 10000,
+ Salary__c > 500000
+)
+
+Rule 4: Department required
+Fields → Department → Edit → Required
+
+Rule 5: Joining Date not future
+Joining_Date__c > TODAY()

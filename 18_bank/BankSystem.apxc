@@ -1,0 +1,92 @@
+public class BankSystem {
+
+    // Create account
+    public static void createAccount(
+        String name,
+        String accNo,
+        Decimal balance
+    ){
+        Bank_Account__c acc = new Bank_Account__c();
+
+        acc.Name = name;
+        acc.Account_Number__c = accNo;
+        acc.Balance__c = balance;
+
+        insert acc;
+
+        System.debug('Account created');
+    }
+
+    // View accounts
+    public static void viewAccounts(){
+
+        List<Bank_Account__c> accounts =
+            [SELECT Name,
+                    Account_Number__c,
+                    Balance__c
+             FROM Bank_Account__c];
+
+        for(Bank_Account__c a : accounts){
+            System.debug('----------------');
+            System.debug('Name: ' + a.Name);
+            System.debug('Acc No: ' + a.Account_Number__c);
+            System.debug('Balance: ' + a.Balance__c);
+        }
+    }
+
+    // Deposit
+    public static void deposit(
+        String accNo,
+        Decimal amount
+    ){
+        Bank_Account__c acc =
+            [SELECT Id, Balance__c
+             FROM Bank_Account__c
+             WHERE Account_Number__c = :accNo
+             LIMIT 1];
+
+        acc.Balance__c += amount;
+
+        update acc;
+
+        System.debug('Deposit successful');
+    }
+
+    // Withdraw
+    public static void withdraw(
+        String accNo,
+        Decimal amount
+    ){
+        Bank_Account__c acc =
+            [SELECT Id, Balance__c
+             FROM Bank_Account__c
+             WHERE Account_Number__c = :accNo
+             LIMIT 1];
+
+        if(acc.Balance__c >= amount){
+            acc.Balance__c -= amount;
+            update acc;
+            System.debug('Withdrawal successful');
+        }
+        else{
+            System.debug('Insufficient balance');
+        }
+    }
+}
+
+/*
+BankSystem.createAccount(
+    'abc',
+    'acc1',
+    5000
+);
+BankSystem.viewAccounts();
+BankSystem.deposit(
+    'acc1',
+    1000
+);
+BankSystem.withdraw(
+    'acc1',
+    2000
+);
+*/

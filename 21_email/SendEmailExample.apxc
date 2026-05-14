@@ -1,0 +1,44 @@
+public class SendEmailExample {
+    
+    public String message {get; set;}
+    
+    public void sendEmail() {
+
+        Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
+
+        mail.setToAddresses(new String[] {'c2k231107@ms.pict.edu'});
+        mail.setSubject('Test Email from Salesforce Apex');
+        mail.setPlainTextBody('Hello, this is a test email sent using Apex.');
+
+        Messaging.SendEmailResult[] results =
+            Messaging.sendEmail(new Messaging.SingleEmailMessage[] {mail});
+
+        if(results[0].isSuccess()){
+            message = 'Email Sent Successfully';
+        }
+        else{
+            message = 'Email Failed: ' + results[0].getErrors()[0].getMessage();
+        }
+    }
+}
+
+
+
+
+// Create email message object
+Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
+
+// Recipient email
+mail.setToAddresses(new String[] {'c2k231107@ms.pict.edu'});
+
+// Email subject
+mail.setSubject('Salesforce Email Notification');
+
+// Email body
+mail.setPlainTextBody('Hello,\nThis is a test email sent using Apex in Salesforce.');
+
+// Send email
+Messaging.sendEmail(new Messaging.SingleEmailMessage[] { mail });
+
+// Success message
+System.debug('Email sent successfully!');
