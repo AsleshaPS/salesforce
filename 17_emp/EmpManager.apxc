@@ -1,0 +1,102 @@
+public class EmployeeManager {
+
+    public static void addEmployee(String empId, String name,
+                                   String email, Date birthDate,
+                                   String department) {
+        Employee__c emp = new Employee__c(
+            Emp_ID__c      = empId,
+            Name           = name,
+            Email__c       = email,
+            Birth_Date__c  = birthDate,
+            Department__c  = department
+        );
+        insert emp;
+        System.debug('Employee added: ' + name);
+    }
+
+    public static void viewAllEmployees() {
+        List<Employee__c> emps = [
+            SELECT Emp_ID__c, Name, Email__c, Birth_Date__c, Department__c
+            FROM Employee__c
+            ORDER BY Name
+        ];
+        if (emps.isEmpty()) {
+            System.debug('No employees found.');
+            return;
+        }
+        System.debug('=== Employee List (' + emps.size() + ') ===');
+        for (Employee__c e : emps) {
+            System.debug(
+                'ID: '   + e.Emp_ID__c    + ' | ' +
+                'Name: ' + e.Name          + ' | ' +
+                'Email: '+ e.Email__c      + ' | ' +
+                'DOB: '  + e.Birth_Date__c + ' | ' +
+                'Dept: ' + e.Department__c
+            );
+        }
+    }
+
+    public static void searchEmployee(String empId) {
+        List<Employee__c> emps = [
+            SELECT Emp_ID__c, Name, Email__c, Birth_Date__c, Department__c
+            FROM Employee__c
+            WHERE Emp_ID__c = :empId
+            LIMIT 1
+        ];
+        if (emps.isEmpty()) {
+            System.debug('No employee found with ID: ' + empId);
+        } else {
+            Employee__c e = emps[0];
+            System.debug('Found → ' + e.Name + ' | ' + e.Email__c +
+                         ' | ' + e.Department__c + ' | DOB: ' + e.Birth_Date__c);
+        }
+    }
+
+    public static void updateDepartment(String empId, String newDept) {
+        List<Employee__c> emps = [
+            SELECT Id, Department__c FROM Employee__c
+            WHERE Emp_ID__c = :empId LIMIT 1
+        ];
+        if (emps.isEmpty()) {
+            System.debug('Employee not found: ' + empId);
+            return;
+        }
+        emps[0].Department__c = newDept;
+        update emps[0];
+        System.debug('Department updated to: ' + newDept);
+    }
+
+    public static void deleteEmployee(String empId) {
+        List<Employee__c> emps = [
+            SELECT Id FROM Employee__c
+            WHERE Emp_ID__c = :empId LIMIT 1
+        ];
+        if (emps.isEmpty()) {
+            System.debug('Employee not found: ' + empId);
+            return;
+        }
+        delete emps[0];
+        System.debug('Employee deleted: ' + empId);
+    }
+}
+
+
+
+/*
+EmployeeManager.addEmployee(
+    '101',
+    'abc',
+    'abc@gmail.com',
+    Date.newInstance(2003, 5, 10),
+    'cs'
+);
+
+EmployeeManager.viewAllEmployees();
+EmployeeManager.searchEmployee('101');
+EmployeeManager.updateDepartment('101', 'it');
+EmployeeManager.viewAllEmployees();
+EmployeeManager.deleteEmployee('101');
+EmployeeManager.viewAllEmployees();
+*/
+
+                    
